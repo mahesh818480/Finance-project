@@ -1,0 +1,130 @@
+.table-container {
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 12px;
+  margin-top: 20px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+}
+
+.header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+/* Title */
+h2 {
+  margin-bottom: 15px;
+  font-weight: 600;
+}
+
+/* Filters */
+.filters {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+mat-form-field {
+  width: 220px;
+}
+
+/* Table */
+table {
+  width: 100%;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+/* Header */
+th.mat-header-cell {
+  background: #3f51b5;
+  color: white;
+  font-weight: 600;
+}
+
+/* Rows */
+td.mat-cell {
+  padding: 12px;
+}
+
+tr.mat-row:hover {
+  background: #f5f7ff;
+  transition: 0.3s;
+}
+
+/* Type colors */
+.income {
+  color: #2e7d32;
+  font-weight: 600;
+}
+
+.expense {
+  color: #d32f2f;
+  font-weight: 600;
+}
+
+/* Action buttons */
+button {
+  margin-right: 5px;
+}
+
+button:hover {
+  transform: scale(1.1);
+}
+
+/* Search alignment fix */
+.filters mat-form-field {
+  margin-top: 5px;
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  height: 70vh;
+  text-align: center;
+
+  background: #ffffff;
+  border-radius: 12px;
+
+  padding: 40px 20px;
+}
+
+/* Image */
+.empty-state img {
+  width: 160px;
+  margin-bottom: 20px;
+  opacity: 0.75;
+}
+
+/* Heading */
+.empty-state h2 {
+  font-size: 20px;
+  font-weight: 600;
+  color: #2d3748;
+  margin-bottom: 8px;
+}
+
+/* Description */
+.empty-state p {
+  font-size: 14px;
+  color: #718096;
+  margin-bottom: 20px;
+}
+
+/* Button */
+.empty-state button {
+  padding: 8px 20px;
+  font-weight: 500;
+  border-radius: 8px;
+}
+
+/* Optional hover polish */
+.empty-state button:hover {
+  transform: translateY(-1px);
+  transition: 0.2s ease;
+}

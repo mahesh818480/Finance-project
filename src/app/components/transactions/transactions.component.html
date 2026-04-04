@@ -1,0 +1,104 @@
+@if(dataSource.data.length > 0){
+<div class="table-container">
+  <!-- Header -->
+  <div class="header-row">
+    <h2>Transactions</h2>
+    <button mat-raised-button color="primary" (click)="openDialog()">
+      + Add Transaction
+    </button>
+  </div>
+
+  <div class="filters">
+    <mat-form-field appearance="outline">
+      <mat-label>Search</mat-label>
+      <input matInput (keyup)="applyFilter($event)">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Type</mat-label>
+      <mat-select [(ngModel)]="filterType" (selectionChange)="filterByType()">
+        <mat-option value="">All</mat-option>
+        <mat-option value="income">Income</mat-option>
+        <mat-option value="expense">Expense</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+  </div>
+
+  <!-- 📊 Table -->
+
+
+  <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+
+    <!-- No. -->
+    <ng-container matColumnDef="No">
+      <th mat-header-cell *matHeaderCellDef>No.</th>
+
+      <td mat-cell *matCellDef="let element; let i = index">{{getIndex(i)}}</td>
+    </ng-container>
+
+
+    <!-- Date -->
+    <ng-container matColumnDef="date">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Date</th>
+      <td mat-cell *matCellDef="let element">{{element.date}}</td>
+    </ng-container>
+
+    <!-- Amount -->
+    <ng-container matColumnDef="amount">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Amount</th>
+      <td mat-cell *matCellDef="let element">{{element.amount}}</td>
+    </ng-container>
+
+    <!-- Category -->
+    <ng-container matColumnDef="category">
+      <th mat-header-cell *matHeaderCellDef>Category</th>
+      <td mat-cell *matCellDef="let element">{{element.category}}</td>
+    </ng-container>
+
+    <!-- Type -->
+    <ng-container matColumnDef="type">
+      <th mat-header-cell *matHeaderCellDef>Type</th>
+      <td mat-cell *matCellDef="let element" [ngClass]="element.type">
+        {{element.type}}
+      </td>
+    </ng-container>
+
+    <!-- Actions -->
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef>Actions</th>
+      <td mat-cell *matCellDef="let element">
+        <button mat-icon-button color="primary" (click)="openDialog(element)">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-icon-button color="warn" (click)="delete(element.id)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <!-- Header & Row -->
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+  </table>
+  <mat-paginator [pageSize]="5" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons>
+  </mat-paginator>
+
+</div>
+}
+@if(dataSource.data.length === 0){
+<div class="empty-state">
+
+  <img src="assets/no_data_found.webp" alt="No Data" />
+
+  <h2>No Transactions Found</h2>
+
+  <p>Start by adding your first transaction</p>
+
+  <button mat-raised-button color="primary" (click)="openDialog()">
+    + Add Transaction
+  </button>
+
+</div>
+}

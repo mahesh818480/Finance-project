@@ -1,0 +1,47 @@
+<div class="cards">
+  <div class="card balance">
+    <h3>Total Balance</h3>
+    <p>{{balance}}</p>
+  </div>
+  <div class="card income">
+    <h3>Income</h3>
+    <p>{{income}}</p>
+  </div>
+  <div class="card expense">
+    <h3>Expense</h3>
+    <p>{{expense}}</p>
+  </div>
+</div>
+
+<div *ngIf="income === 0 && expense === 0" class="empty-state premium">
+  <img src="assets/no_data_found.webp" alt="No Data" class="animate-img" />
+  <h2>Welcome to Your Finance Dashboard 👋</h2>
+  <p>Start by adding your first transaction to track your income and expenses</p>
+
+  <!-- 🎯 Tips -->
+  <div class="tips">
+    <p>💡 Try adding:</p>
+    <ul>
+      <li>Salary (Income)</li>
+      <li>Food / Rent (Expense)</li>
+    </ul>
+  </div>
+
+  <!-- Actions -->
+  <div class="actions">
+    <button mat-raised-button color="primary" (click)="openDialog()">
+      + Add Transaction
+    </button>
+
+    <button mat-stroked-button color="accent">
+      Load Demo Data
+    </button>
+  </div>
+
+</div>
+
+<!-- Chart -->
+<div *ngIf="income !== 0 || expense !== 0" class="chart">
+
+  <canvas id="myChart"></canvas>
+</div>
