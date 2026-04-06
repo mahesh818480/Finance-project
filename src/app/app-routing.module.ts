@@ -1,10 +1,22 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { AuthGuard } from './services/auth.guard';
 
 const routes: Routes = [
-  { path: 'dashboard', loadChildren: () => import('./components/dashboard/dashboard.module').then((m) => m.DashBoardModule) },
-  { path: 'transaction', loadChildren: () => import('./components/transactions/transactions.module').then((m) => m.TransactionModule) }
-]
+  {
+    path: '',
+    loadChildren: () =>
+      import('./modules/auth.module')
+        .then(m => m.AuthModule)
+  },
+  {
+    path: 'dashboard',
+    loadChildren: () =>
+      import('./modules/dashboard.module')
+        .then(m => m.DashboardModule),
+         canActivate: [AuthGuard]  
+  }
+];
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]

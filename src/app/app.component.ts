@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { DataService } from './services/data.service';
 
 @Component({
   selector: 'app-root',
@@ -7,4 +8,9 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'finance-project';
+  constructor(private ds: DataService) {}
+
+ngOnInit() {
+  this.ds.initUserData(); 
+}
 }

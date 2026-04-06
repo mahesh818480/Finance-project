@@ -12,29 +12,49 @@ export interface Transaction {
 @Injectable({ providedIn: 'root' })
 export class DataService {
 
-   // 🔥 LOAD FROM LOCAL STORAGE
+  public transactions = new BehaviorSubject<Transaction[]>([]);
+  transactions$ = this.transactions.asObservable();
   private loadInitialData(): Transaction[] {
-    const data = localStorage.getItem('transactions');
-
-    if (!data) return [];
-
-    try {
-      const parsed = JSON.parse(data);
-      return Array.isArray(parsed) ? parsed : [];
-    } catch {
-      return [];
-    }
+    const email = this.getCurrentUserEmail();
+    if (!email) return [];
+    const data = localStorage.getItem('transactions' + email);
+    return data ? JSON.parse(data) : [];
   }
 
-  private transactions = new BehaviorSubject<Transaction[]>(this.loadInitialData());
-  transactions$ = this.transactions.asObservable();
+  initUserData() {
+    const email = this.getCurrentUserEmail();
+    if (!email) {
+      console.log('No user found ❌');
+      this.transactions.next([]);
+      return;
+    }
+    const data = localStorage.getItem('transactions_' + email);
+    const parsed = data ? JSON.parse(data) : [];
+    console.log(parsed, 'INIT DATA ✅');
+    this.transactions.next(parsed);
+  }
+
+  // CURRENT USER EMAIL
+  private getCurrentUserEmail(): string {
+    const user = JSON.parse(localStorage.getItem('currentUser') || '{}');
+    console.log(user, 'CURRENT USER 🔥');
+    return user?.email || '';
+  }
 
   // SAVE METHOD LOCALSTORAGE
   private saveToLocalStorage(data: Transaction[]) {
-    localStorage.setItem('transactions', JSON.stringify(data));
+    const email = this.getCurrentUserEmail();
+
+    if (!email) return;
+
+    localStorage.setItem('transactions_' + email, JSON.stringify(data));
+  }
+  
+  getUserName() {
+    const user = JSON.parse(localStorage.getItem('currentUser') || '{}');
+    return user.name
   }
 
-  // ADD
   addTransaction(tx: Transaction) {
     const updated = [...this.transactions.value, tx];
 
@@ -57,6 +77,12 @@ export class DataService {
     const updated = this.transactions.value.filter(t => t.id !== id);
     this.transactions.next(updated);
     this.saveToLocalStorage(updated);
+  }
+
+  // WHEN WE REFRESH THE PAGE THEN DATA IS EMPTY SO THAT PERPOSE
+  reloadUserData() {
+    const data = this.loadInitialData();
+    this.transactions.next(data);
   }
 
 }

@@ -1,39 +1,65 @@
-<div class="cards">
-  <div class="card balance">
-    <h3>Total Balance</h3>
-    <p>{{balance}}</p>
+<!-- Cards -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 my-4">
+
+  <!-- Balance -->
+  <div class="rounded-xl p-5 text-white shadow-md bg-gradient-to-r from-indigo-500 to-indigo-400">
+    <h3 class="text-sm opacity-90">Total Balance</h3>
+    <p class="text-2xl font-bold mt-2">{{ balance }}</p>
   </div>
-  <div class="card income">
-    <h3>Income</h3>
-    <p>{{income}}</p>
+
+  <!-- Income -->
+  <div class="rounded-xl p-5 text-white shadow-md bg-gradient-to-r from-green-500 to-green-400">
+    <h3 class="text-sm opacity-90">Income</h3>
+    <p class="text-2xl font-bold mt-2">{{ income }}</p>
   </div>
-  <div class="card expense">
-    <h3>Expense</h3>
-    <p>{{expense}}</p>
+
+  <!-- Expense -->
+  <div class="rounded-xl p-5 text-white shadow-md bg-gradient-to-r from-red-500 to-red-400">
+    <h3 class="text-sm opacity-90">Expense</h3>
+    <p class="text-2xl font-bold mt-2">{{ expense }}</p>
   </div>
+
 </div>
 
-<div *ngIf="income === 0 && expense === 0" class="empty-state premium">
-  <img src="assets/no_data_found.webp" alt="No Data" class="animate-img" />
-  <h2>Welcome to Your Finance Dashboard 👋</h2>
-  <p>Start by adding your first transaction to track your income and expenses</p>
+<!-- Empty State -->
+<div *ngIf="income === 0 && expense === 0"
+     class="flex flex-col items-center justify-center text-center bg-gradient-to-br from-white to-gray-50 rounded-2xl p-6 sm:p-10 shadow-md min-h-[60vh]">
 
-  <!-- 🎯 Tips -->
-  <div class="tips">
-    <p>💡 Try adding:</p>
-    <ul>
+  <!-- Image -->
+  <img src="assets/no_data_found.webp"
+       alt="No Data"
+       class="w-32 sm:w-40 mb-4 opacity-80 animate-bounce" />
+
+  <!-- Title -->
+  <h2 class="text-lg sm:text-xl font-semibold mb-2">
+    Welcome to Your Finance Dashboard 👋
+  </h2>
+
+  <!-- Subtitle -->
+  <p class="text-gray-500 text-sm sm:text-base mb-4">
+    Start by adding your first transaction to track your income and expenses
+  </p>
+
+  <!-- Tips -->
+  <div class="text-sm text-gray-600 mb-4">
+    <p class="font-medium">💡 Try adding:</p>
+    <ul class="mt-1 space-y-1">
       <li>Salary (Income)</li>
       <li>Food / Rent (Expense)</li>
     </ul>
   </div>
 
   <!-- Actions -->
-  <div class="actions">
-    <button mat-raised-button color="primary" (click)="openDialog()">
+  <div class="flex flex-col sm:flex-row gap-3 mt-2">
+
+    <button mat-raised-button color="primary"
+            class="w-full sm:w-auto"
+            (click)="openDialog()">
       + Add Transaction
     </button>
 
-    <button mat-stroked-button color="accent">
+    <button mat-stroked-button color="accent"
+            class="w-full sm:w-auto">
       Load Demo Data
     </button>
   </div>
@@ -41,7 +67,9 @@
 </div>
 
 <!-- Chart -->
-<div *ngIf="income !== 0 || expense !== 0" class="chart">
+<div *ngIf="income !== 0 || expense !== 0"
+     class="mt-4 bg-white rounded-xl shadow-md p-4 sm:p-6">
 
-  <canvas id="myChart"></canvas>
+  <canvas id="myChart" class="w-full max-h-[300px]"></canvas>
+
 </div>
