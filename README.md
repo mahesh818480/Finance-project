@@ -21,6 +21,7 @@ A modern Finance Dashboard built using Angular 18, Angular Material, and Tailwin
 * Angular 18
 * Angular Material
 * Tailwind CSS
+* SCSS
 * RxJS
 * Chart.js
 
