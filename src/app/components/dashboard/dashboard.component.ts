@@ -39,8 +39,6 @@ export class DashboardComponent implements OnInit {
   }
 
   loadChart() {
-
-    // destroy old chart (important 🔥)
     if (this.chart) {
       this.chart.destroy();
     }
