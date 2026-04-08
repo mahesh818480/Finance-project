@@ -4,19 +4,19 @@
   <!-- Balance -->
   <div class="rounded-xl p-5 text-white shadow-md bg-gradient-to-r from-indigo-500 to-indigo-400">
     <h3 class="text-sm opacity-90">Total Balance</h3>
-    <p class="text-2xl font-bold mt-2">{{ balance }}</p>
+    <p class="text-2xl font-bold mt-2">₹ {{ displayIncome | number }}</p>
   </div>
 
   <!-- Income -->
   <div class="rounded-xl p-5 text-white shadow-md bg-gradient-to-r from-green-500 to-green-400">
     <h3 class="text-sm opacity-90">Income</h3>
-    <p class="text-2xl font-bold mt-2">{{ income }}</p>
+    <p class="text-2xl font-bold mt-2">₹ {{ displayExpense | number }}</p>
   </div>
 
   <!-- Expense -->
   <div class="rounded-xl p-5 text-white shadow-md bg-gradient-to-r from-red-500 to-red-400">
     <h3 class="text-sm opacity-90">Expense</h3>
-    <p class="text-2xl font-bold mt-2">{{ expense }}</p>
+    <p class="text-2xl font-bold mt-2">₹{{ displayIncome | number }}</p>
   </div>
 
 </div>

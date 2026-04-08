@@ -1,10 +1,10 @@
 <mat-toolbar color="primary" class="flex justify-between px-4 shadow">
-  <!-- 🔷 Left: Logo -->
+  <!--  Left: Logo -->
   <span class="font-semibold text-lg cursor-pointer" routerLink="/dashboard">
     💰 Finance App
   </span>
 
-  <!-- 🧭 Desktop Menu -->
+  <!--  Desktop Menu -->
   <div class="hidden lg:flex items-center gap-6">
     <a mat-button routerLink="/dashboard" routerLinkActive="active-link">
       Dashboard
@@ -47,7 +47,7 @@
 
     </mat-menu>
 
-    <!-- 🍔 Mobile Burger -->
+    <!-- Mobile Burger -->
     <div class="lg:hidden">
       <button mat-icon-button (click)="menuClick.emit()">
         <mat-icon>menu</mat-icon>
