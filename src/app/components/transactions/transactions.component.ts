@@ -5,6 +5,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-transactions',
@@ -18,7 +19,7 @@ export class TransactionsComponent {
   filterType = '';
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
-  constructor(private ds: DataService, private dialogService: DialogService, private dialog: MatDialog) { }
+  constructor(private ds: DataService, private dialogService: DialogService, private router: Router, private dialog: MatDialog) { }
 
   ngOnInit() {
     this.ds.transactions$.subscribe(data => {
@@ -69,5 +70,9 @@ export class TransactionsComponent {
   getIndex(i: number): number {
     if (!this.paginator) return i + 1;
     return i + 1 + (this.paginator.pageIndex * this.paginator.pageSize);
+  }
+
+  goToDocs() {
+    this.router.navigate(['/docs'], { fragment: 'transactions' });
   }
 }

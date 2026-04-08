@@ -1,4 +1,5 @@
 import { Component, ElementRef, HostListener, ViewChild } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-docs',
@@ -30,11 +31,26 @@ export class DocsComponent {
     'transactions',
     'insights'
   ];
+  constructor(private route:ActivatedRoute){}
 
   ngAfterViewInit() {
     this.contentArea.nativeElement.addEventListener('scroll', () => {
       this.onScroll();
     });
+    this.route.fragment.subscribe(fragment => {
+    if (fragment) {
+      this.activeSection = fragment;
+      setTimeout(() => {
+        const element = document.getElementById(fragment);
+        if (element) {
+          this.contentArea.nativeElement.scrollTo({
+            top: element.offsetTop - 20,
+            behavior: 'smooth'
+          });
+        }
+      }, 200); // wait for DOM
+    }
+  });
   }
 
   scrollTo(section: string) {
