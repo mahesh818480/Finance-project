@@ -17,6 +17,7 @@ import { MatToolbar, MatToolbarModule } from "@angular/material/toolbar";
 import { DashboardRoutingModule } from './dashboard-routing.module';
 import { LayoutComponent } from '../components/layout/layout.component';
 import { MatMenuModule } from '@angular/material/menu';
+import { DocsComponent } from '../components/docs/docs.component';
 
 @NgModule({
     declarations: [
@@ -24,7 +25,8 @@ import { MatMenuModule } from '@angular/material/menu';
         TransactionsComponent,
         InsightsComponent,
         HeaderComponent,
-        LayoutComponent
+        LayoutComponent,
+        DocsComponent
     ],
     imports: [
         CommonModule,
