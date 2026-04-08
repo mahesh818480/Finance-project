@@ -2,43 +2,42 @@
 <div class="fixed inset-y-0 left-0 w-64 bg-white shadow-xl z-40
          transform transition-transform duration-300 -translate-x-full" [ngClass]="{ 'translate-x-0': isSidebarOpen }">
 
-    <!-- Logo -->
     <div class="p-5 text-xl font-bold border-b flex items-center gap-2">
         💰 <span>Finance</span>
     </div>
 
-    <!-- Menu -->
     <nav class="p-4 space-y-2">
         <a routerLink="/dashboard" (click)="closeSidebar()" routerLinkActive="bg-blue-100 text-blue-600"
-            class="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 transition">
+            class="flex items-center gap-3 p-3 rounded-lg transition">
             <mat-icon>dashboard</mat-icon>
             <span>Dashboard</span>
         </a>
 
         <a routerLink="/dashboard/transaction" (click)="closeSidebar()" routerLinkActive="bg-blue-100 text-blue-600"
-            class="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 transition">
+            class="flex items-center gap-3 p-3 rounded-lg transition">
 
             <mat-icon>receipt_long</mat-icon>
             <span>Transactions</span>
         </a>
 
         <a routerLink="/dashboard/insights" (click)="closeSidebar()" routerLinkActive="bg-blue-100 text-blue-600"
-            class="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 transition">
+            class="flex items-center gap-3 p-3 rounded-lg transition">
 
             <mat-icon>insights</mat-icon>
             <span>Insights</span>
         </a>
 
         <a routerLink="/dashboard/docs" (click)="closeSidebar()" routerLinkActive="bg-blue-100 text-blue-600"
-            class="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 transition">
+            class="flex items-center gap-3 p-3 rounded-lg  transition">
 
-            <mat-icon>docs</mat-icon>
+            <mat-icon>assignment</mat-icon>
             <span>Docs</span>
         </a>
 
     </nav>
 
 </div>
+
 <div>
     <router-outlet></router-outlet>
 </div>
