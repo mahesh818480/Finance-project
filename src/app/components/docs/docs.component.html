@@ -1,19 +1,10 @@
 <div class="flex h-[calc(100vh-64px)] bg-white">
-  <!-- 📱 MOBILE HEADER -->
-  <div class="md:hidden fixed top-0 left-0 right-0 bg-white border-b p-4 flex justify-between items-center z-50">
-    <h2 class="font-semibold">📘 Docs</h2>
-    <button (click)="isSidebarOpen = true">☰</button>
-  </div>
 
   <!-- 📱 OVERLAY -->
-  <div *ngIf="isSidebarOpen" class="fixed flex h-[calc(100vh-64px)] inset-0 bg-black/30 z-40 md:hidden"
-    (click)="isSidebarOpen = false"></div>
+  <div *ngIf="isSidebarOpen" class="fixed inset-0 bg-black/30 z-30 md:hidden" (click)="isSidebarOpen = false"></div>
 
   <!-- SIDEBAR -->
-  <aside #sidebar class="fixed md:static top-0 left-0 h-full w-64 bg-gray-50 border-r p-5 z-50
-         transform transition-transform duration-300
-         -translate-x-full md:translate-x-0
-         overflow-y-auto" [class.translate-x-0]="isSidebarOpen">
+  <aside #sidebar class="hidden md:block w-64 bg-gray-50 border-r p-5 overflow-y-auto">
 
     <h2 class="text-lg font-semibold mb-6">📘 Docs</h2>
 
@@ -69,7 +60,7 @@
 
   <!-- CONTENT -->
 
-  <main #contentArea class="flex-1 overflow-y-auto p-6 md:p-8 space-y-24 ">
+  <main #contentArea class="flex-1 overflow-y-auto p-6 space-y-20 pt-4 md:pt-0">
 
     <section id="login" class="mb-16">
       <h2 class="text-2xl font-bold mb-4 text-blue-600">🔐 Login Page</h2>
