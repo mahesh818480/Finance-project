@@ -5,6 +5,7 @@ import { LayoutComponent } from "../components/layout/layout.component";
 import { TransactionsComponent } from "../components/transactions/transactions.component";
 import { NgModule } from "@angular/core";
 import { AuthGuard } from "../services/auth.guard";
+import { DocsComponent } from "../components/docs/docs.component";
 
 const routes: Routes = [
   {
@@ -24,6 +25,10 @@ const routes: Routes = [
       {
         path: 'insights',
         component: InsightsComponent
+      },
+      {
+        path:'docs',
+        component:DocsComponent
       }
 
     ]
