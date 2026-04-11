@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
+import { AuthResponse } from 'src/app/models/auth.model';
 
 @Component({
   selector: 'app-register',
@@ -9,17 +10,17 @@ import { Router } from '@angular/router';
 })
 export class RegisterComponent {
 
-  form!:FormGroup
+  form!: FormGroup
   constructor(
     private fb: FormBuilder,
     private auth: AuthService,
     private router: Router
   ) {
-     this.form = this.fb.group({
-    name: ['', Validators.required],
-    email: ['', [Validators.required, Validators.email]],
-    password: ['', [Validators.required, Validators.minLength(6)]]
-  });
+    this.form = this.fb.group({
+      name: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.minLength(6)]]
+    });
   }
 
   submit() {
@@ -27,14 +28,18 @@ export class RegisterComponent {
       this.form.markAllAsTouched();
       return;
     }
-
-    const res = this.auth.register(this.form.value);
-
-    if (res.success) {
-      alert('Registered Successfully ✅');
-      this.router.navigate(['/login']);
-    } else {
-      alert(res.message);
-    }
+    this.auth.register(this.form.value).subscribe({
+      next: (res: AuthResponse) => {
+        if (res.success) {
+          alert('Registered Successfully ✅');
+          this.router.navigate(['/login']);
+        } else {
+          alert(res.message);
+        }
+      },
+      error: (err) => {
+        alert(err.message);
+      }
+    })
   }
 }

@@ -5,6 +5,8 @@ import { Router } from '@angular/router';
 import { DataService } from 'src/app/services/data.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ForgotPasswordComponent } from '../forgot-password/forgot-password.component';
+import { HttpClient } from '@angular/common/http';
+import { AuthResponse } from 'src/app/models/auth.model';
 
 @Component({
   selector: 'app-login',
@@ -16,8 +18,7 @@ export class LoginComponent {
     private fb: FormBuilder,
     private auth: AuthService,
     private router: Router,
-    private ds: DataService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
   ) { }
 
   form = this.fb.group({
@@ -30,15 +31,20 @@ export class LoginComponent {
       this.form.markAllAsTouched();
       return;
     }
+    this.auth.login(this.form.value).subscribe({
+      next: (res: AuthResponse) => {
+       localStorage.setItem('token', res.token)
+        if (res.success) {
+          this.router.navigate(['/dashboard']);
+        } else {
+          alert(res.message);
+        }
 
-    const res = this.auth.login(this.form.value);
-
-    if (res.success) {
-      this.ds.initUserData();
-      this.router.navigate(['/dashboard']);
-    } else {
-      alert(res.message);
-    }
+      },
+      error: (err) => {
+        alert('Something went wrong');
+      }
+    });
   }
 
   openForgotDialog() {

@@ -17,6 +17,8 @@ import { TransactionDialogComponent } from './components/transaction-dialog/tran
 import { RoleSwitchComponent } from './components/role-switch/role-switch.component';
 import { AuthModule } from './modules/auth.module';
 import { DashboardModule } from './modules/dashboard.module';
+import { HTTP_INTERCEPTORS, provideHttpClient } from '@angular/common/http';
+import { authInterceptor } from './interceptors/auth.interceptor';
 @NgModule({
   declarations: [
     AppComponent,
@@ -41,7 +43,13 @@ import { DashboardModule } from './modules/dashboard.module';
     AuthModule
   ],
   providers: [
-    provideAnimationsAsync()
+    provideAnimationsAsync(),
+    provideHttpClient(),
+    {
+      provide: HTTP_INTERCEPTORS,
+      useValue: authInterceptor,
+      multi: true
+    }
   ],
   bootstrap: [AppComponent]
 })

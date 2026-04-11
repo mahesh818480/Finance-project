@@ -22,8 +22,7 @@ export class DashboardComponent implements OnInit {
 
   constructor(
     private ds: DataService,
-    private route: Router,
-    private dialogService: DialogService
+    private dialogService: DialogService,
   ) { }
 
   ngOnInit() {
@@ -101,7 +100,7 @@ export class DashboardComponent implements OnInit {
           labels: ['Income', 'Expense'],
           datasets: [{
             label: 'Finance',
-            data: [this.income, this.expense],
+            data: [50000, this.expense],
             backgroundColor: ['#6e829d', '#d878a9'],
           }]
         }
