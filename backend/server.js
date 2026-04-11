@@ -22,6 +22,10 @@ app.get('/', (req, res) => {
     res.send('Backend Running 🚀');
 });
 
+app.get('/test', (req, res) => {
+  res.send('Test working ✅');
+});
+
 // const mongoose = require('mongoose');
 
 const mongoiseLink = 'mongodb+srv://maheshji:Mahesh7662@cluster0.xsi0m06.mongodb.net/financeDB?retryWrites=true&w=majority';
