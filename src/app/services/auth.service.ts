@@ -1,42 +1,23 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { AuthResponse } from '../models/auth.model';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
+  baseUrl = 'http://localhost:3000/api';
 
-  register(user: any) {
-    const users = this.getUsers();
-    const exist = users.find((u: any) => u.email === user.email);
-    if (exist) {
-      return { success: false, message: 'User already exists' };
-    }
-    users.push(user);
-    localStorage.setItem('users', JSON.stringify(users));
-
-    return { success: true };
+  constructor(private http: HttpClient) { }
+  login(data: any): Observable<AuthResponse> {
+    return this.http.post<AuthResponse>(`${this.baseUrl}/login`, data);
   }
 
-  login(data: any) {
-    const users = this.getUsers();
-
-    const user = users.find(
-      (u: any) =>
-        u.email === data.email && u.password === data.password
-    );
-
-    if (user) {
-      localStorage.setItem('currentUser', JSON.stringify(user));
-      return { success: true };
-    }
-
-    return { success: false, message: 'Invalid credentials' };
-  }
-
-  private getUsers() {
-    const data = localStorage.getItem('users');
-    return data ? JSON.parse(data) : [];
+  register(data: any): Observable<AuthResponse> {
+    return this.http.post<AuthResponse>(`${this.baseUrl}/register`, data);
   }
 
   logout() {
     localStorage.removeItem('currentUser');
   }
+
 }
