@@ -5,7 +5,7 @@ import { AuthResponse } from '../models/auth.model';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  baseUrl = 'http://localhost:3000/api';
+  baseUrl = 'https://finance-project-ec2z.onrender.com/api';
 
   constructor(private http: HttpClient) { }
   login(data: any): Observable<AuthResponse> {
