@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
@@ -14,6 +15,7 @@ export class DataService {
 
   public transactions = new BehaviorSubject<Transaction[]>([]);
   transactions$ = this.transactions.asObservable();
+  constructor(private http: HttpClient) { }
   private loadInitialData(): Transaction[] {
     const email = this.getCurrentUserEmail();
     if (!email) return [];
@@ -49,18 +51,18 @@ export class DataService {
 
     localStorage.setItem('transactions_' + email, JSON.stringify(data));
   }
-  
+
   getUserName() {
     const user = JSON.parse(localStorage.getItem('currentUser') || '{}');
     return user.name
   }
 
-  addTransaction(tx: Transaction) {
-    const updated = [...this.transactions.value, tx];
-
-    this.transactions.next(updated);
-    this.saveToLocalStorage(updated);
-  }
+  /*   addTransaction(tx: Transaction) {
+      const updated = [...this.transactions.value, tx];
+  
+      this.transactions.next(updated);
+      this.saveToLocalStorage(updated);
+    } */
 
   // EDIT AND UPDATE TO LOCALSTORHGE
   updateTransaction(updatedTx: Transaction) {
@@ -83,6 +85,15 @@ export class DataService {
   reloadUserData() {
     const data = this.loadInitialData();
     this.transactions.next(data);
+  }
+
+  getTransactions() {
+    return this.http.get<any>('https://finance-project-ec2z.onrender.com/api/transactions');
+  }
+
+  addTransaction(data: any) {
+    console.log(data,'!!!Post')
+    return this.http.post<any>('https://finance-project-ec2z.onrender.com/api/transactions', data);
   }
 
 }
