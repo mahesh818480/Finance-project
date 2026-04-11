@@ -22,6 +22,10 @@ app.get('/', (req, res) => {
     res.send('Backend Running 🚀');
 });
 
+app.get('/test', (req, res) => {
+  res.send('Test working ✅');
+});
+
 // const mongoose = require('mongoose');
 
 const mongoiseLink = 'mongodb+srv://maheshji:Mahesh7662@cluster0.xsi0m06.mongodb.net/financeDB?retryWrites=true&w=majority';
@@ -108,6 +112,7 @@ app.get('/api/profile', auth, (req, res) => {
 
 // Transaction Post Call
 app.post('/api/transactions', auth, async (req, res) => {
+    res.send("Transactions API working 🚀")
   try {
     console.log(req.body,'11::')
     const transaction = await Transaction.create({
