@@ -112,6 +112,7 @@ app.get('/api/profile', auth, (req, res) => {
 
 // Transaction Post Call
 app.post('/api/transactions', auth, async (req, res) => {
+    res.send("Transactions API working 🚀")
   try {
     console.log(req.body,'11::')
     const transaction = await Transaction.create({
