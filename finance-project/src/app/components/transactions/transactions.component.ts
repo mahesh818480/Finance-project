@@ -22,8 +22,16 @@ export class TransactionsComponent {
   constructor(private ds: DataService, private dialogService: DialogService, private router: Router, private dialog: MatDialog) { }
 
   ngOnInit() {
-    this.ds.transactions$.subscribe(data => {
-      this.dataSource.data = data;
+    // this.ds.transactions$.subscribe(data => {
+    //   this.dataSource.data = data;
+    // });
+    this.ds.getTransactions().subscribe({
+      next:(res) =>{
+        console.log(res,'===>>')
+        if(res){
+          this.dataSource.data = res
+        }
+      }
     });
   }
   ngAfterViewInit() {

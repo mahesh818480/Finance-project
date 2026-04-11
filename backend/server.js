@@ -8,6 +8,11 @@ const app = express();
 const jwt = require('jsonwebtoken');
 const SECRET_KEY = 'mysecretkey';
 
+const auth = require('./middleware/auth');
+
+// Trancation
+const Transaction = require('./models/Transaction');
+
 // middleware
 app.use(cors());
 app.use(express.json());
@@ -93,11 +98,42 @@ app.post('/api/login', async (req, res) => {
     }
 });
 
-const auth = require('./middleware/auth');
 
 app.get('/api/profile', auth, (req, res) => {
     res.json({
         success: true,
         userId: req.userId
     });
+});
+
+// Transaction Post Call
+app.post('/api/transactions', auth, async (req, res) => {
+  try {
+    console.log(req.body,'11::')
+    const transaction = await Transaction.create({
+      ...req.body,
+      userId: req.userId   // 🔥 important
+    });
+
+    res.json({ success: true, transaction });
+
+  } catch (err) {
+    res.json({ success: false, message: err.message });
+  }
+});
+
+//Transaction Get CAll
+app.get('/api/transactions', auth, async (req, res) => {
+  try {
+    
+    const data = await Transaction.find({
+      userId: req.userId   // 🔥 filter
+    });
+    console.log(data,'req::!222',req.userId)
+
+    res.json({ success: true, data });
+
+  } catch (err) {
+    res.json({ success: false });
+  }
 });
