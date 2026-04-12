@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { TransactionDialogComponent } from '../components/transaction-dialog/transaction-dialog.component';
 
 export interface Transaction {
   id: number;
@@ -12,8 +13,39 @@ export interface Transaction {
 
 @Injectable({ providedIn: 'root' })
 export class DataService {
+  private baseUrl = 'https://finance-project-ec2z.onrender.com/api';
 
   public transactions = new BehaviorSubject<Transaction[]>([]);
+  transactions$ = this.transactions.asObservable();
+
+  constructor(private http: HttpClient) { }
+
+  // 🟢 LOAD DATA FROM BACKEND
+  loadTransactions() {
+    this.http.get<any>(`${this.baseUrl}/transactions`).subscribe(res => {
+      if (res.success) {
+        this.transactions.next(res.data);
+      }
+    });
+  }
+
+  // 🟢 ADD TRANSACTION
+  addTransaction(data: any) {
+    console.log(data, '121::::AddTran')
+    return this.http.post<any>(`${this.baseUrl}/transactions`, data);
+  }
+
+  // 🟢 DELETE (OPTIONAL FUTURE)
+  deleteTransaction(id: string) {
+    return this.http.delete(`${this.baseUrl}/transactions/${id}`);
+  }
+
+  getTransactions() {
+    return this.http.get<any>('https://finance-project-ec2z.onrender.com/api/transactions');
+  }
+
+
+  /* public transactions = new BehaviorSubject<Transaction[]>([]);
   transactions$ = this.transactions.asObservable();
   constructor(private http: HttpClient) { }
   private loadInitialData(): Transaction[] {
@@ -55,7 +87,7 @@ export class DataService {
   getUserName() {
     const user = JSON.parse(localStorage.getItem('currentUser') || '{}');
     return user.name
-  }
+  } */
 
   /*   addTransaction(tx: Transaction) {
       const updated = [...this.transactions.value, tx];
@@ -65,7 +97,7 @@ export class DataService {
     } */
 
   // EDIT AND UPDATE TO LOCALSTORHGE
-  updateTransaction(updatedTx: Transaction) {
+  /* updateTransaction(updatedTx: Transaction) {
     const updated = this.transactions.value.map(t =>
       t.id === updatedTx.id ? updatedTx : t
     );
@@ -94,6 +126,6 @@ export class DataService {
   addTransaction(data: any) {
     console.log(data,'!!!Post')
     return this.http.post<any>('https://finance-project-ec2z.onrender.com/api/transactions', data);
-  }
+  } */
 
 }

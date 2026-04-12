@@ -13,21 +13,27 @@ export class DialogService {
     private ds: DataService
   ) {}
 
-  openTransactionDialog(data: any = null) {
-    const dialogRef = this.dialog.open(TransactionDialogComponent, {
-      width: '350px',
-      data: data
-    });
+  // openTransactionDialog(data: any = null) {
+  //   const dialogRef = this.dialog.open(TransactionDialogComponent, {
+  //     width: '350px',
+  //     data: data
+  //   });
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        if (data) {
-          this.ds.updateTransaction(result);
-        } else {
-          result.id = Date.now();
-          this.ds.addTransaction(result);
-        }
-      }
-    });
-  }
+  //   dialogRef.afterClosed().subscribe(result => {
+  //     if (result) {
+  //       if (data) {
+  //         this.ds.addTransaction(result).subscribe((res) =>console.log(res,'121:::Dialog===>>'));
+  //       } else {
+  //         result.id = Date.now();
+  //         this.ds.addTransaction(result);
+  //       }
+  //     }
+  //   });
+  // }
+  openTransactionDialog(data: any = null) {
+  return this.dialog.open(TransactionDialogComponent, {
+    width: '350px',
+    data: data
+  }).afterClosed();
+}
 }

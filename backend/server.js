@@ -112,7 +112,6 @@ app.get('/api/profile', auth, (req, res) => {
 
 // Transaction Post Call
 app.post('/api/transactions', auth, async (req, res) => {
-    res.send("Transactions API working 🚀")
   try {
     console.log(req.body,'11::')
     const transaction = await Transaction.create({
@@ -129,6 +128,7 @@ app.post('/api/transactions', auth, async (req, res) => {
 
 //Transaction Get CAll
 app.get('/api/transactions', auth, async (req, res) => {
+    console.log(req.body,'121:::====>>>')
   try {
     
     const data = await Transaction.find({
