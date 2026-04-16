@@ -23,7 +23,7 @@ app.get('/', (req, res) => {
 });
 
 app.get('/test', (req, res) => {
-  res.send('Test working ✅');
+    res.send('Test working ✅');
 });
 
 // const mongoose = require('mongoose');
@@ -38,7 +38,7 @@ mongoose.connect(mongoiseLink)
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+    console.log(`Server running on port ${PORT}`);
 });
 
 //Register Api Call
@@ -110,35 +110,61 @@ app.get('/api/profile', auth, (req, res) => {
     });
 });
 
-// Transaction Post Call
-app.post('/api/transactions', auth, async (req, res) => {
-  try {
-    console.log(req.body,'11::')
-    const transaction = await Transaction.create({
-      ...req.body,
-      userId: req.userId   // 🔥 important
-    });
+app.post('/api/transactions/create', auth, async (req, res) => {
+    try {
+        const transaction = await Transaction.create({
+            ...req.body,
+            userId: req.userId
+        });
 
-    res.json({ success: true, transaction });
+        res.json({ success: true, data: transaction });
 
-  } catch (err) {
-    res.json({ success: false, message: err.message });
-  }
+    } catch (err) {
+        res.json({ success: false, message: err.message });
+    }
 });
 
-//Transaction Get CAll
 app.get('/api/transactions', auth, async (req, res) => {
-    console.log(req.body,'121:::====>>>')
-  try {
-    
-    const data = await Transaction.find({
-      userId: req.userId   // 🔥 filter
-    });
-    console.log(data,'req::!222',req.userId)
+    try {
+        res.set('Cache-Control', 'no-store');
 
-    res.json({ success: true, data });
+        const data = await Transaction.find({
+            userId: req.userId
+        });
 
-  } catch (err) {
-    res.json({ success: false });
-  }
+        res.json({ success: true, data });
+
+    } catch (err) {
+        res.json({ success: false });
+    }
+});
+
+app.delete('/api/transactions/delete/:id', async (req, res) => {
+    try {
+        const id = req.params.id;
+        console.log(id, '145::::', req.body)
+        await Transaction.findByIdAndDelete(id);
+
+        res.json({ success: true });
+
+    } catch (err) {
+        res.json({ success: false, message: err.message });
+    }
+});
+
+app.put('/api/transactions/update/:id', async (req, res) => {
+    try {
+        const id = req.params.id;
+        console.log(id, '1458::::', req.body)
+        const updated = await Transaction.findByIdAndUpdate(
+            id,
+            req.body,
+           { returnDocument: 'after' }
+        );
+
+        res.json({ success: true, data: updated });
+
+    } catch (err) {
+        res.json({ success: false, message: err.message });
+    }
 });

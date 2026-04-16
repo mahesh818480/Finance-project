@@ -14,173 +14,79 @@ import { TransactionDialogComponent } from '../transaction-dialog/transaction-di
   styleUrls: ['./transactions.component.scss']
 })
 export class TransactionsComponent {
-  displayedColumns: string[] = ['No', 'date', 'amount', 'category', 'type', 'actions'];
-  dataSource = new MatTableDataSource<any>();
 
-  filterType = '';
-  @ViewChild(MatSort) sort!: MatSort;
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
-  constructor(private ds: DataService, private dialogService: DialogService, private router: Router, private dialog: MatDialog) { }
+displayedColumns: string[] = ['No', 'date', 'amount', 'category', 'type', 'actions'];
+dataSource = new MatTableDataSource<any>();
 
- /*  ngOnInit() {
-    // this.ds.transactions$.subscribe(data => {
-    //   this.dataSource.data = data;
-    // });
-    this.ds.getTransactions().subscribe({
-      next:(res) =>{
-        console.log(res,'121::::Trans')
-        if(res){
-          this.dataSource.data = res
-        }
-      }
-    });
-  }
-  ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
-  }
-  applyFilter(event: any) {
-    const value = event.target.value.trim().toLowerCase();
-    this.dataSource.filter = value;
-  }
+filterType = '';
 
-  filterByType() {
-    this.dataSource.filterPredicate = (data: any, filter: string) => {
-      return filter ? data.type === filter : true;
-    };
+@ViewChild(MatSort) sort!: MatSort;
+@ViewChild(MatPaginator) paginator!: MatPaginator;
 
-    this.dataSource.filter = this.filterType;
-  }
+constructor(
+  private ds: DataService,
+  private dialogService: DialogService,
+  private router: Router,
+  private dialog: MatDialog
+) {}
 
+ngOnInit() {
+  this.ds.loadTransactions();
+  this.ds.transactions$.subscribe(data => {
+    console.log(data, 'DATA::::');
+    this.dataSource.data = data;
+  });
+}
 
-  openDialog(data: any = null) {
-    this.dialogService.openTransactionDialog(data);
-  } */
+ngAfterViewInit() {
+  this.dataSource.paginator = this.paginator;
+  this.dataSource.sort = this.sort;
+}
 
-  /* ADD */
- /*  add(tx: any) {
-    tx.id = Date.now();
-    this.ds.addTransaction(tx);
-  } */
+applyFilter(event: any) {
+  const value = event.target.value.trim().toLowerCase();
+  this.dataSource.filter = value;
+}
 
-  /* EDIT */
- /*  edit(updated: any) {
-    // this.ds.updateTransaction(updated);
-    this.ds.addTransaction(updated);
+filterByType() {
+  this.dataSource.filterPredicate = (data: any, filter: string) => {
+    return filter ? data.type === filter : true;
+  };
 
-  } */
+  this.dataSource.filter = this.filterType;
+}
 
-  /* DELETE */
-/*   delete(id: number) {
-    if (confirm('Delete this transaction?')) {
-      this.ds.deleteTransaction(id);
-    }
-  } */
+openDialog(data: any = null) {
+  const dialogRef = this.dialog.open(TransactionDialogComponent, {
+    width: '350px',
+    data: data
+  });
 
-  // PageNation COUNT
- /*  getIndex(i: number): number {
-    if (!this.paginator) return i + 1;
-    return i + 1 + (this.paginator.pageIndex * this.paginator.pageSize);
-  }
-
-  goToDocs() {
-    this.router.navigate(['/docs'], { fragment: 'transactions' });
-  } */
-
-  // 🟢 LOAD DATA
-  ngOnInit() {
-    console.log(this.loadData(),'121:::====')
-    this.loadData();
-  }
-
-  loadData() {
-    this.ds.getTransactions().subscribe({
-      next: (res: any) => {
-        console.log(res, 'API RESPONSE');
-
-        if (res.success) {
-          this.dataSource.data = res.data; // 🔥 FIXED
-        }
-      },
-      error: (err: any) => {
-        console.log(err, 'API ERROR');
-      }
-    });
-  }
-
-  ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
-  }
-
-  // 🔍 SEARCH
-  applyFilter(event: any) {
-    const value = event.target.value.trim().toLowerCase();
-    this.dataSource.filter = value;
-  }
-
-  // 🔽 FILTER TYPE
-  filterByType() {
-    this.dataSource.filterPredicate = (data: any, filter: string) => {
-      return filter ? data.type === filter : true;
-    };
-
-    this.dataSource.filter = this.filterType;
-  }
-
-  // 🟢 OPEN DIALOG
-  // openDialog(data: any = null) {
-  //   this.dialogService.openTransactionDialog(data);
-  // }
-
-  openDialog(data: any = null) {
-    console.log("BUTTON CLICKED 🔥");
-  this.dialogService.openTransactionDialog(data).subscribe(result => {
-    console.log("DIALOG RESULT 🔥", result);
-
+  dialogRef.afterClosed().subscribe(result => {
     if (result) {
-      this.ds.addTransaction(result).subscribe(res => {
-        console.log("POST RESPONSE 🔥", res);
-        this.loadData();
-      });
+      if (data) {
+        result._id = data._id;
+        this.ds.updateTransaction(result);
+      } else {
+        this.ds.addTransaction(result);
+      }
     }
   });
 }
 
-  // ➕ ADD
-  add(tx: any) {
-    this.ds.addTransaction(tx).subscribe(res => {
-      if (res.success) {
-        this.loadData(); // 🔥 REFRESH
-      }
-    });
+delete(id: number) {
+  console.log(id,'===DELLL')
+  if (confirm('Delete this transaction?')) {
+    this.ds.deleteTransaction(id);
   }
+}
+// Pagenation perpose 
+getIndex(i: number): number {
+  if (!this.paginator) return i + 1;
+  return i + 1 + (this.paginator.pageIndex * this.paginator.pageSize);
+}
 
-  // ✏️ EDIT
-  edit(updated: any) {
-    this.ds.addTransaction(updated).subscribe(res => {
-      if (res.success) {
-        this.loadData(); // 🔥 REFRESH
-      }
-    });
-  }
-
-  // ❌ DELETE (backend needed)
-  delete(id: string) {
-    if (confirm('Delete this transaction?')) {
-      this.ds.deleteTransaction(id).subscribe(() => {
-        this.loadData(); // 🔥 REFRESH
-      });
-    }
-  }
-
-  // 🔢 PAGINATION INDEX
-  getIndex(i: number): number {
-    if (!this.paginator) return i + 1;
-    return i + 1 + (this.paginator.pageIndex * this.paginator.pageSize);
-  }
-
-  goToDocs() {
-    this.router.navigate(['/docs'], { fragment: 'transactions' });
-  }
+goToDocs() {
+  this.router.navigate(['/docs'], { fragment: 'transactions' });
+}
 }

@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { TransactionDialogComponent } from '../components/transaction-dialog/transaction-dialog.component';
 
 export interface Transaction {
   id: number;
@@ -9,123 +8,46 @@ export interface Transaction {
   amount: number;
   category: string;
   type: 'income' | 'expense';
+  _id: string
 }
 
 @Injectable({ providedIn: 'root' })
 export class DataService {
-  private baseUrl = 'https://finance-project-ec2z.onrender.com/api';
+  private API_URL = 'http://localhost:3000/api/transactions';
 
   public transactions = new BehaviorSubject<Transaction[]>([]);
   transactions$ = this.transactions.asObservable();
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+  }
 
-  // 🟢 LOAD DATA FROM BACKEND
+  // initially get data 
   loadTransactions() {
-    this.http.get<any>(`${this.baseUrl}/transactions`).subscribe(res => {
-      if (res.success) {
-        this.transactions.next(res.data);
-      }
-    });
+    this.http.get<any>(this.API_URL)
+      .subscribe(res => {
+        this.transactions.next(res.data || []);
+      });
   }
 
-  // 🟢 ADD TRANSACTION
-  addTransaction(data: any) {
-    console.log(data, '121::::AddTran')
-    return this.http.post<any>(`${this.baseUrl}/transactions`, data);
+  // when we user add the transation
+  addTransaction(tx: Transaction) {
+    this.http.post(`${this.API_URL}/create`, tx)
+      .subscribe(() => {
+        this.loadTransactions();
+      });
   }
 
-  // 🟢 DELETE (OPTIONAL FUTURE)
-  deleteTransaction(id: string) {
-    return this.http.delete(`${this.baseUrl}/transactions/${id}`);
-  }
-
-  getTransactions() {
-    return this.http.get<any>('https://finance-project-ec2z.onrender.com/api/transactions');
-  }
-
-
-  /* public transactions = new BehaviorSubject<Transaction[]>([]);
-  transactions$ = this.transactions.asObservable();
-  constructor(private http: HttpClient) { }
-  private loadInitialData(): Transaction[] {
-    const email = this.getCurrentUserEmail();
-    if (!email) return [];
-    const data = localStorage.getItem('transactions' + email);
-    return data ? JSON.parse(data) : [];
-  }
-
-  initUserData() {
-    const email = this.getCurrentUserEmail();
-    if (!email) {
-      console.log('No user found ❌');
-      this.transactions.next([]);
-      return;
-    }
-    const data = localStorage.getItem('transactions_' + email);
-    const parsed = data ? JSON.parse(data) : [];
-    console.log(parsed, 'INIT DATA ✅');
-    this.transactions.next(parsed);
-  }
-
-  // CURRENT USER EMAIL
-  private getCurrentUserEmail(): string {
-    const user = JSON.parse(localStorage.getItem('currentUser') || '{}');
-    console.log(user, 'CURRENT USER 🔥');
-    return user?.email || '';
-  }
-
-  // SAVE METHOD LOCALSTORAGE
-  private saveToLocalStorage(data: Transaction[]) {
-    const email = this.getCurrentUserEmail();
-
-    if (!email) return;
-
-    localStorage.setItem('transactions_' + email, JSON.stringify(data));
-  }
-
-  getUserName() {
-    const user = JSON.parse(localStorage.getItem('currentUser') || '{}');
-    return user.name
-  } */
-
-  /*   addTransaction(tx: Transaction) {
-      const updated = [...this.transactions.value, tx];
-  
-      this.transactions.next(updated);
-      this.saveToLocalStorage(updated);
-    } */
-
-  // EDIT AND UPDATE TO LOCALSTORHGE
-  /* updateTransaction(updatedTx: Transaction) {
-    const updated = this.transactions.value.map(t =>
-      t.id === updatedTx.id ? updatedTx : t
-    );
-
-    this.transactions.next(updated);
-    this.saveToLocalStorage(updated);
-  }
-
-  // DELETE
+  // when we remove the transations
   deleteTransaction(id: number) {
-    const updated = this.transactions.value.filter(t => t.id !== id);
-    this.transactions.next(updated);
-    this.saveToLocalStorage(updated);
+    this.http.delete(`${this.API_URL}/delete/${id}`)
+      .subscribe(() => {
+        this.loadTransactions();
+      });
   }
 
-  // WHEN WE REFRESH THE PAGE THEN DATA IS EMPTY SO THAT PERPOSE
-  reloadUserData() {
-    const data = this.loadInitialData();
-    this.transactions.next(data);
+  // when we update the transations
+  updateTransaction(tx: Transaction) {
+    this.http.put(`${this.API_URL}/update/${tx._id}`, tx)
+      .subscribe(() => this.loadTransactions());
   }
-
-  getTransactions() {
-    return this.http.get<any>('https://finance-project-ec2z.onrender.com/api/transactions');
-  }
-
-  addTransaction(data: any) {
-    console.log(data,'!!!Post')
-    return this.http.post<any>('https://finance-project-ec2z.onrender.com/api/transactions', data);
-  } */
-
 }

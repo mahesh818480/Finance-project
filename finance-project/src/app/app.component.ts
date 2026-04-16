@@ -11,6 +11,5 @@ export class AppComponent {
   constructor(private ds: DataService) {}
 
 ngOnInit() {
-  // this.ds.initUserData(); 
 }
 }
