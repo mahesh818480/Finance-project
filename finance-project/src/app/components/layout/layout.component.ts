@@ -12,7 +12,7 @@ toggleSidebar() {
   this.isSidebarOpen = !this.isSidebarOpen;
 }
 
-// ✅ CLOSE AFTER CLICK
+// CLOSE AFTER CLICK
 closeSidebar() {
   this.isSidebarOpen = false;
 }

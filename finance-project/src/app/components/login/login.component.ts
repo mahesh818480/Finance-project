@@ -2,10 +2,8 @@ import { Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
-import { DataService } from 'src/app/services/data.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ForgotPasswordComponent } from '../forgot-password/forgot-password.component';
-import { HttpClient } from '@angular/common/http';
 import { AuthResponse } from 'src/app/models/auth.model';
 
 @Component({
@@ -33,7 +31,7 @@ export class LoginComponent {
     }
     this.auth.login(this.form.value).subscribe({
       next: (res: AuthResponse) => {
-       localStorage.setItem('token', res.token)
+        localStorage.setItem('token', res.token)
         if (res.success) {
           this.router.navigate(['/dashboard']);
         } else {

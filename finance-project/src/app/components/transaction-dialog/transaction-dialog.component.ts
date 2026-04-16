@@ -29,7 +29,6 @@ export class TransactionDialogComponent {
   }
 
   save() {
-
     if (this.form.invalid) {
       this.form.markAllAsTouched(); // show errors
       return;
@@ -40,7 +39,7 @@ export class TransactionDialogComponent {
       ...this.form.value,
       date: new Date().toISOString().split('T')[0]
     };
-
+    console.log(result, '0000::::ResDialog')
     this.dialogRef.close(result);
   }
 

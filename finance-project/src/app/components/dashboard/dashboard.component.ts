@@ -26,9 +26,8 @@ export class DashboardComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.ds.loadTransactions()
     this.ds.transactions$.subscribe(data => {
-
-      // Calculate values
       const newIncome = data
         .filter(t => t.type === 'income')
         .reduce((a, b) => a + b.amount, 0);
@@ -100,7 +99,7 @@ export class DashboardComponent implements OnInit {
           labels: ['Income', 'Expense'],
           datasets: [{
             label: 'Finance',
-            data: [50000, this.expense],
+            data: [this.income, this.expense],
             backgroundColor: ['#6e829d', '#d878a9'],
           }]
         }
@@ -110,6 +109,6 @@ export class DashboardComponent implements OnInit {
 
   // ADD TRANSACTION
   openDialog(data: any = null) {
-    this.dialogService.openTransactionDialog(data);
+    this.dialogService.openDialog(data);
   }
 }

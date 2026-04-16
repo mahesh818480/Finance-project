@@ -8,32 +8,27 @@ import { DataService } from './data.service';
 })
 export class DialogService {
 
- constructor(
+  constructor(
     private dialog: MatDialog,
     private ds: DataService
-  ) {}
+  ) { }
 
-  // openTransactionDialog(data: any = null) {
-  //   const dialogRef = this.dialog.open(TransactionDialogComponent, {
-  //     width: '350px',
-  //     data: data
-  //   });
+  openDialog(data: any = null) {
+    const dialogRef = this.dialog.open(TransactionDialogComponent, {
+      width: '350px',
+      data: data
+    });
 
-  //   dialogRef.afterClosed().subscribe(result => {
-  //     if (result) {
-  //       if (data) {
-  //         this.ds.addTransaction(result).subscribe((res) =>console.log(res,'121:::Dialog===>>'));
-  //       } else {
-  //         result.id = Date.now();
-  //         this.ds.addTransaction(result);
-  //       }
-  //     }
-  //   });
-  // }
-  openTransactionDialog(data: any = null) {
-  return this.dialog.open(TransactionDialogComponent, {
-    width: '350px',
-    data: data
-  }).afterClosed();
-}
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('DIALOG RESULT:', result); 
+      if (result) {
+        if (data) {
+          result._id = data._id;
+          this.ds.updateTransaction(result);
+        } else {
+          this.ds.addTransaction(result); 
+        }
+      }
+    });
+  }
 }
